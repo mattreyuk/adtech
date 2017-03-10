@@ -4,3 +4,9 @@ management:
 
 server:
   port: 8080
+  
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/adtech
+    username: adtechapp
+  
