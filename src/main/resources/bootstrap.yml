@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: adtech
+
+logging:
+  file: /tmp/logs/${spring.application.name}

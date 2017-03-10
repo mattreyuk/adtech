@@ -1,0 +1,6 @@
+management:
+  context-path: /admin
+  add-application-context-header: false
+
+server:
+  port: 8080
