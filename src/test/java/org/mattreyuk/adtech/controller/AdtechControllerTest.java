@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import org.mattreyuk.adtech.domain.Transaction;
 import org.mattreyuk.adtech.domain.Transaction.ClickResult;
 import org.mattreyuk.adtech.service.AdtechService;
 import org.mockito.Mockito;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -77,7 +79,7 @@ public class AdtechControllerTest {
 		this.mvc.perform(get("/click?tid="+tid+"&userid="+userid)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
-		Mockito.verify(mockService).registerClick(tid, userid);
+		Mockito.verify(mockService).registerClick(Matchers.eq(tid), Matchers.eq(userid),Matchers.any(LocalDateTime.class));
 		
 	}
 

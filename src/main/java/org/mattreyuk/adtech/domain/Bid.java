@@ -7,6 +7,7 @@ import javax.annotation.concurrent.Immutable;
 import lombok.Builder;
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class Bid {
 	private Integer providerId;
 	private BigDecimal bidPrice;
+	@JsonIgnore
+	private String html;
 
 	  @JsonPOJOBuilder(withPrefix = "")
 	  public static final class BidBuilder {

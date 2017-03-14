@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,12 +59,13 @@ public class AdtechController {
 	notes = "used to show an ad was clicked on")
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Void")})
   @GetMapping(path="/click", produces="application/json")
-  public Void clickAd(@ApiParam(value = "tid (uuid)", required=true) @RequestParam(value="tid", required = true) UUID tid,
+  public void clickAd(@ApiParam(value = "tid (uuid)", required=true) @RequestParam(value="tid", required = true) UUID tid,
 	      @ApiParam(value = "user id", required=true) @RequestParam(value="userid", required = true) Integer userid
       ) {
-    
+		LocalDateTime now = LocalDateTime.now();
+
 	LOGGER.debug("registering click for ad tid: {} on user:{}",tid,userid);
-    return service.registerClick(tid,userid);
+    service.registerClick(tid,userid,now);
   }
 
   @ApiOperation(value = "Get transaction history", 
