@@ -47,7 +47,7 @@ public class AdtechController {
 	notes = "Returns a tid uuid and html for the winning ad")
   @ApiResponses(value = {@ApiResponse(code = 200, message = "AdMessage")})
   @GetMapping(path="/ad", produces="application/json")
-  public AdMessage getAd(@ApiParam(value = "ad width", required=true) @RequestParam(value="width", required = true) Integer width,
+  public ResponseEntity<AdMessage> getAd(@ApiParam(value = "ad width", required=true) @RequestParam(value="width", required = true) Integer width,
 	      @ApiParam(value = "ad height", required=true) @RequestParam(value="height", required = true) Integer height,
 	      @ApiParam(value = "user id", required=true) @RequestParam(value="userid", required = true) Integer userid,
 	      @ApiParam(value = "url of page for ad", required=true) @RequestParam(value="url", required = true) String url,
@@ -55,9 +55,14 @@ public class AdtechController {
 	      HttpServletRequest request
       ) throws IOException {
     
-	LOGGER.debug("finding ad for user:{} width:{} height:{} url:{}",userid,width,height,url);
+	LOGGER.info("finding ad for user:{} width:{} height:{} url:{}",userid,width,height,url);
 	URL decodedUrl = new URL(URLDecoder.decode(url,"UTF-8"));
-    return service.findAd(userid,width,height,decodedUrl,userAgent,request.getRemoteAddr());
+	AdMessage ad = service.findAd(userid,width,height,decodedUrl,userAgent,request.getRemoteAddr());
+	if(ad!=null){
+		return new ResponseEntity<AdMessage>(ad, HttpStatus.OK);
+	}else{
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
   }
 
   @ApiOperation(value = "Register click", 
@@ -69,7 +74,7 @@ public class AdtechController {
       ) {
 		LocalDateTime now = LocalDateTime.now();
 
-	LOGGER.debug("registering click for ad tid: {} on user:{}",tid,userid);
+	LOGGER.info("registering click for ad tid: {} on user:{}",tid,userid);
     service.registerClick(tid,userid,now);
   }
 
@@ -79,7 +84,7 @@ public class AdtechController {
   @GetMapping(path="/history", produces="application/json")
   public List<Transaction> getTransactionHistory() {
     
-	LOGGER.debug("getting transaction history");
+	LOGGER.info("getting transaction history");
     return service.getTransactions();
   }
   

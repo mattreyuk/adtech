@@ -47,7 +47,7 @@ public class AdtechService {
 		List<Provider> providers;
 		LOGGER.info("getting ads for user: {}, width: {}, height: {}", user_id, width, height);
 		providers = adtechDal.findProviders(user_id, width, height);
-		LOGGER.debug("found: {}", providers);
+		LOGGER.info("found: {}", providers);
 
 		if (providers != null && !providers.isEmpty()) {
 			ProviderRequest req = ProviderRequest.builder().width(width).height(height).useragent(userAgent).
@@ -71,16 +71,28 @@ public class AdtechService {
 
 			LOGGER.info("Bids received: {}",bids);
 			
-			UUID tid = UUID.randomUUID();
-			Bid winningBid=bids.get(bids.size()-1);
-			Transaction tx=Transaction.builder()
-					.adTime(LocalDateTime.now()).bids(bids).clickResult(ClickResult.REQUEST)
-					.transactionId(tid).userid(user_id).winningPrice(winningBid.getBidPrice())
-					.winningProvider(winningBid.getProviderId()).build();
-			
-			historyDal.addTransaction(tx);
+			if (!bids.isEmpty()) {
+				UUID tid = UUID.randomUUID();
+				Bid winningBid = bids.get(bids.size() - 1);
+				Transaction tx = Transaction.builder()
+						.adTime(LocalDateTime.now())
+						.bids(bids)
+						.clickResult(ClickResult.REQUEST)
+						.transactionId(tid)
+						.userid(user_id)
+						.winningPrice(winningBid.getBidPrice())
+						.winningProvider(winningBid.getProviderId())
+						.build();
 
-			return AdMessage.builder().tid(tid).html(winningBid.getHtml()).build();
+				historyDal.addTransaction(tx);
+
+				return AdMessage.builder()
+						.tid(tid)
+						.html(winningBid.getHtml())
+						.build();
+			} else {
+				return null;
+			}
 			
 		}
 

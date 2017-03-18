@@ -35,7 +35,7 @@ public class ProviderCommand extends HystrixObservableCommand<Bid>{
 
 	@Override
 	protected Observable<Bid> construct() {
-		LOGGER.debug("calling provider: {} with request: {}",provider,request);
+		LOGGER.info("calling provider: {} with request: {}",provider,request);
 		
 		HttpEntity<ProviderRequest> httpRequest = new HttpEntity<>(request);
 	    ResponseEntity<ProviderResponse> response = restTemplate.exchange(
