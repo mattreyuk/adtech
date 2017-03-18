@@ -3,10 +3,18 @@ management:
   add-application-context-header: false
 
 server:
-  port: 8080
+  port: 80
   
 spring:
   datasource:
     url: jdbc:mysql://localhost/adtech
     username: adtechapp
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 150
   

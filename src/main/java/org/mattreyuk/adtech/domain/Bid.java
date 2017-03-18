@@ -24,8 +24,12 @@ public class Bid {
 	@JsonIgnore
 	private String html;
 
-	  @JsonPOJOBuilder(withPrefix = "")
-	  public static final class BidBuilder {
-	  }
+	public static Integer comparePrice(Bid bid1, Bid bid2) {
+		return bid1.bidPrice.compareTo(bid2.bidPrice);
+	}
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static final class BidBuilder {
+	}
 
 }

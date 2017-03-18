@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.concurrent.Immutable;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;

@@ -9,8 +9,6 @@ import java.util.UUID;
 
 import org.mattreyuk.adtech.domain.Transaction;
 import org.mattreyuk.adtech.domain.Transaction.ClickResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -21,10 +19,11 @@ public class HistoryDal {
 	int size;
 
 	private LinkedHashMap<UUID, Transaction> history;
-	private static final Logger LOGGER = LoggerFactory.getLogger(HistoryDal.class);
 
 	public HistoryDal() {
 		history = new LinkedHashMap<UUID, Transaction>(size, (float) 0.75, false) {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected boolean removeEldestEntry(Map.Entry<UUID, Transaction> eldest) {
 				return size() > size;

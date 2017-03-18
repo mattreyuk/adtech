@@ -1,7 +1,6 @@
 package org.mattreyuk.adtech.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -16,16 +15,22 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import org.mattreyuk.adtech.error.ErrorMessage;
 import org.mattreyuk.adtech.domain.AdMessage;
 import org.mattreyuk.adtech.domain.Transaction;
 import org.mattreyuk.adtech.service.AdtechService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestController
 public class AdtechController {
@@ -76,6 +81,16 @@ public class AdtechController {
     
 	LOGGER.debug("getting transaction history");
     return service.getTransactions();
+  }
+  
+  @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class})
+  @ResponseBody public ResponseEntity<ErrorMessage> handleMethodArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
+    return new ResponseEntity<>(ErrorMessage.builder().code("400").message("Invalid ad parameter(s)").build(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(value = {MalformedURLException.class})
+  @ResponseBody public ResponseEntity<ErrorMessage> handleMalformedURLException(HttpServletRequest request, MalformedURLException ex) {
+    return new ResponseEntity<>(ErrorMessage.builder().code("400").message("Invalid Url").build(), HttpStatus.BAD_REQUEST);
   }
 
 }

@@ -39,7 +39,9 @@ public class AdtechDal {
 						new int[]{INTEGER,INTEGER,INTEGER,INTEGER,INTEGER},
 						(rs, rowNum) ->{
 							try{
-							return Provider.builder().provider_id(rs.getInt("provider_id")).url(new URL(rs.getString("url"))).build();
+							return Provider.builder().provider_id(rs.getInt("provider_id")).
+									provider_name(rs.getString("provider_name")).
+									url(new URL(rs.getString("url"))).build();
 							}catch(MalformedURLException e){
 								LOGGER.warn("provider_id {} has invalid url: {}",rs.getInt("provider_id"),rs.getString("url"));
 								return null;
