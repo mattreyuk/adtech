@@ -1,0 +1,23 @@
+Potential fraud issues:
+
+The user could call any of the endpoints independently and could therefore generate
+multiple ad calls for different sizes without having to display them. They could then
+call the click endpoint for all ads requested regardless of if they were shown or a
+real user clicked on them and claim payment.
+
+To mitigate this issue, the server that provides the client side code could generate
+an encrypted identifier when that code is requested for a page. The client side code
+would provide that identifier on requests to be validated by the server. When ads
+are provided, an encrypted version of the tid and user id could be provided in a domain
+cookie that only the adtech client code should be able to read which would be provided
+on any click calls and again, validated by the server.
+
+Fraud prevention analytics on the data stream captured either from logs or a more
+robust history process could be used to look for user interactions that are out of
+norm for the user population such as number and rate of ad requests/click results
+to flag users that may be fraudulent.
+
+Database:
+
+Note that the provided SQL has an error in the Provider table creation - the url column
+cannot be AUTO_INCREMENT and I would consider using AUTO_INCREMENT for the id columns in all tables.

@@ -1,0 +1,17 @@
+{
+  "request":
+    {
+      "urlPattern": "/p3",
+      "method": "POST"
+    },
+
+  "response":
+    {
+      "status": 200,
+      "headers":
+        {
+          "Content-Type" : "application/json"
+        },
+      "body": "{\"adhtml\": \"other html\", \"bidprice\": 0.0055}"
+    }
+}
